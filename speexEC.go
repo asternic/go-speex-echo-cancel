@@ -38,6 +38,7 @@ type EchoCanceller struct {
 	echoState *C.EchoCanceller
 }
 
+// Creates new AEC module
 func NewEchoCanceller(frameSize, filterLen int, sample_rate int) *EchoCanceller {
 
 	ec := C.speex_aec_init(C.int(frameSize), C.int(filterLen), C.int(sample_rate))
@@ -45,6 +46,7 @@ func NewEchoCanceller(frameSize, filterLen int, sample_rate int) *EchoCanceller 
 
 }
 
+// Processes audio frame with AEC
 func (ec *EchoCanceller) Process(mic, ref []int16) []int16 {
 	frameSize := len(mic)
 	out := make([]int16, frameSize)
@@ -59,6 +61,7 @@ func (ec *EchoCanceller) Process(mic, ref []int16) []int16 {
 	return out
 }
 
+// Destroys AEC module
 func (ec *EchoCanceller) Destroy() {
 	C.speex_aec_destroy(ec.state)
 }
